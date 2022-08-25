@@ -70,15 +70,13 @@ df_count_sim_as_np = df_count_sim.values
 
 np.fill_diagonal(df_count_sim_as_np, 0)
 df_count_result = pd.DataFrame(df_count_sim_as_np)
-df_count_result['best_match'] = df_count_result.idxmax()
-df_count_result['similarity'] = df_count_result.max()
-# df_count_result = df_count_result[df_count_result['similarity']>0]
-# df.merge(df_count_result[['best_match (count)', 'similarity']], how='left', left_index=True, right_on='best_match (count)')
-count_result = df_count_result[['best_match', 'similarity']]
-count_result['thread1'] = corpus
-right_table = pd.DataFrame(corpus, columns=['thread2'])
+df_count_result['best_match (count)'] = df_count_result.idxmax()
+df_count_result['similarity (count)'] = df_count_result.max()
 
-count_result = count_result.merge(right_table, left_on='best_match', right_index=True)
+count_result = df_count_result[['best_match (count)', 'similarity (count)']]
+df = df.merge(count_result, how='left', left_index=True, right_index=True)
+
+
 
 
 # using tf-idf
@@ -91,24 +89,25 @@ df_tfidf_sim_as_np = df_tfidf_sim.values
 
 np.fill_diagonal(df_tfidf_sim_as_np, 0)
 df_tfidf_result = pd.DataFrame(df_tfidf_sim_as_np)
-df_tfidf_result['best_match'] = df_tfidf_result.idxmax()
-df_tfidf_result['similarity'] = df_tfidf_result.max()
+df_tfidf_result['best_match (tf-idf)'] = df_tfidf_result.idxmax()
+df_tfidf_result['similarity (tf-idf)'] = df_tfidf_result.max()
 
-tfidf_result = df_tfidf_result[['best_match', 'similarity']]
-tfidf_result['thread1'] = corpus
-right_table = pd.DataFrame(corpus, columns=['thread2'])
+tfidf_result = df_tfidf_result[['best_match (tf-idf)', 'similarity (tf-idf)']]
+df = df.merge(tfidf_result, how='left', left_index=True, right_index=True)
 
 
-tfidf_result = tfidf_result.merge(right_table, left_on='best_match', right_index=True)
+
+
+df['best_match (count)'] = df['best_match (count)'].map(df['orig_thread'].to_dict())
+df['best_match (tf-idf)'] = df['best_match (tf-idf)'].map(df['orig_thread'].to_dict())
+
 
 
 # compare
 # random 10
 sample_index = np.random.randint(0, len(corpus), 10)
 
-count_result.loc[sample_index][['thread1', 'thread2', 'similarity']].to_markdown(index=False)
-tfidf_result.loc[sample_index][['thread1', 'thread2', 'similarity']].to_markdown(index=False)
-
+print(df.loc[sample_index][['orig_thread', 'best_match (count)', 'best_match (tf-idf)']].reset_index().to_markdown())
 
 
 
