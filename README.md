@@ -3,20 +3,23 @@
 * Goal
     - Analyze the top 1,000 questions from r/askreddit and find similar threads
 
-* Sample use cases:
+* Sample use cases
     - Recommend similar questions when visiting a thread
     - Identify reposts
     - Outside of forums, this can also be used to suggest relevant news pieces about a particular topic that the user is reading
 
+
 * Method
-    - Stem words using nltk
+    - Remove english stop words (common words like 'the', 'and', 'I' that appear frequently but don't convey insight into the topic of the question)
+    - Stem words using nltk (removing plurals, stemming verbs in different tenses, etc)
     - Convert text to vector using bag-of-word method. The tally can be either by
         - (1) raw word frequency, or
         - (2) tf-idf
     - Use cosine similarity metric to find the closest matching thread name
 
-* Observations (wip)
-    - Thread names are usually short. Therefore using raw word count will yield higher similarity score than tf-idf because of repeated phrases (eg. what, you(r), etc.)
+
+* Observation
+    - Thread names are usually short. Therefore using raw word count will yield higher similarity score than tf-idf because of common phrases that are not filted as stop words (eg. what, you(r), etc.)
     - tf-idf works slightly better because rarer topics can be matched
 
 
