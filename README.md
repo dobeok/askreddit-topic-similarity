@@ -6,9 +6,11 @@
 * Sample use cases:
     - Recommend similar questions when visiting a thread
     - Identify reposts
+    - Outside of forums, this can also be used to suggest relevant news pieces about a particular topic that the user is reading
 
 * Method
-    - Convert text to vector using bag-of-word method. The tally can be either
+    - Stem words using nltk
+    - Convert text to vector using bag-of-word method. The tally can be either by
         - (1) raw word frequency, or
         - (2) tf-idf
     - Use cosine similarity metric to find the closest matching thread name
@@ -18,10 +20,19 @@
     - tf-idf works slightly better because rarer topics can be matched
 
 
+* Takeaways
+    - 1,000 samples are not much, considering the number of posts made daily. This is a limit from PRAW. I can potentially look for alternative sources that archive reddit posts and do an offline analysis (for exammple: monthly data). With more data points, the matching process will most likely improve.
+    - Some of the matches found are not strictly accurate, but intersting. As a user, I would be definitely okay with this simple algorithm.
+
+
 ## Results
+#### Most frequent words
+
+![](./assets/top_15.png)
+
 #### Compare similarity score
 
-![](./data/compare%20sim%20score.png)
+![](./assets/compare%20sim%20score.png)
 
 #### Preview data
 
